@@ -1,74 +1,40 @@
 const mockCoworkings = require('./mock-coworkings')
 const express = require('express')
+const { Sequelize, DataTypes } = require('sequelize')
 const app = express()
 const port = 3000
 
+
+const sequelize = new Sequelize(
+    'coworking_07_2023',
+    'root',
+    '',
+    {
+        host: 'localhost',
+        dialect: 'mariadb',
+        logging: false
+    }
+)
+
+// const CoworkingModel = require('./models/coworkingModel')
+// const Coworking = CoworkingModel(sequelize, DataTypes)
+
+// const User = sequelize.define('User', {
+//     username: DataTypes.STRING,
+//     birthday: DataTypes.DATE,
+// });
+
+// User.create({
+//     username: 'janedoe',
+//     birthday: new Date(1980, 6, 20),
+// });
+
+sequelize.authenticate()
+    .then(() => console.log('La connexion à la base de données a bien été établie.'))
+    .catch(error => console.error(`Impossible de se connecter à la base de données ${error}`))
+
 app.use(express.json())
-
-app.get('/api/coworkings/:id', (req, res) => {
-    let targetCoworking = mockCoworkings.find(el => el.id === parseInt(req.params.id))
-
-    if (targetCoworking) {
-        return res.json({ message: `L'élément ayant pour id ${targetCoworking.id} a bien été récupéré.`, data: targetCoworking })
-    } else {
-        return res.json({ message: `L'élément ayant pour id ${req.params.id} n'a pas pu être récupéré.` })
-    }
-})
-
-app.get('/api/coworkings', (req, res) => {
-    const criterium = req.query.criterium ? req.query.criterium : 'superficy'
-    const orderBy = req.query.orderBy || 'ASC'
-    const arrToSort = [...mockCoworkings];
-    const nosort = req.query.nosort
-
-    if (!nosort && (orderBy === 'ASC' || orderBy === 'DESC') && (criterium === 'superficy' || criterium === 'capacity')) {
-
-        arrToSort.sort((a, b) => {
-            return orderBy === 'DESC' ? b[criterium] - a[criterium] : a[criterium] - b[criterium]
-        })
-    }
-
-    res.json({ message: 'La liste des coworkings a bien été récupérée.', data: arrToSort })
-})
-
-app.post('/api/coworkings', (req, res) => {
-    // on ajoute à un nouvel objet {} un id unique, en l'occurrence égal au dernier id du mock-coworkings auquel on ajoute 1
-    const newId = mockCoworkings[mockCoworkings.length - 1].id + 1
-    const newCoworking = { id: newId, ...req.body }
-    mockCoworkings.push(newCoworking)
-    return res.json({ message: `Un nouveau coworking n°${newCoworking.name} a été créé.`, data: newCoworking })
-})
-
-app.put('/api/coworkings/:id', (req, res) => {
-    const indexInArray = mockCoworkings.findIndex((element) => {
-        return element.id === parseInt(req.params.id)
-    })
-
-    if (indexInArray === -1) {
-        return res.json({ message: `Le coworking ${req.params.id} n'existe pas.` })
-    } else {
-        let updatedCoworking = { ...mockCoworkings[indexInArray], ...req.body }
-        mockCoworkings[indexInArray] = updatedCoworking;
-
-        return res.json({ message: `Le coworking ${updatedCoworking.name} a été modifié`, data: updatedCoworking })
-    }
-
-
-})
-
-// implémenter le endpoint
-app.delete('/api/coworkings/:id', (req, res) => {
-    const indexInArray = mockCoworkings.findIndex((element) => {
-        return element.id === parseInt(req.params.id)
-    })
-
-    if (indexInArray === - 1) {
-        return res.json({ message: `L'id ${req.params.id} ne correspond à aucun élément.` })
-    } else {
-        const deletedeCoworkings = mockCoworkings.splice(indexInArray, 1)
-        return res.json({ message: `L'élément id ${req.params.id} a bien été supprimé`, data: deletedeCoworkings[0] })
-    }
-})
+app.use('/api/coworkings', require('./routes/coworkingRoutes'))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
