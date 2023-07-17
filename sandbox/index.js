@@ -1,40 +1,33 @@
-// LES TROIS PETITS POINTS ...
-
 // SPREAD OPERATOR
 
 // pour les tableaux
-const middleNumbers = [6, 7];
-const numbers = [5, ...middleNumbers, 8];
-// console.log(numbers)
+// const arr1 = [2, 4, 7]
+// const arr2 = [3, 5, 8]
 
-const numbers1 = [1, 2];
-const numbers2 = [3, 4];
-let result = [...numbers1, ...numbers2];
-// console.log(result)
+// const newArr = [1, ...arr2, "hello", "world"]
 
-// Pour des objets
+// console.log(newArr)
+
+// pour les objets
+
 const amir = {
     name: 'Amir',
-    age: 36,
-};
+    age: 36
+}
+
 const amirWithEmail = {
     ...amir,
     email: 'amir@example.com'
-};
-
-// console.log(amirWithEmail);
-
-const newAmir = {
-    name: 'Amir',
-    age: 37,
 }
 
-const lastAmir = {
+// console.log(amirWithEmail)
+
+const oldAmir = {
     ...amir,
-    ...newAmir
+    age: 37
 }
 
-// console.log(lastAmir);
+// console.log(oldAmir)
 
 // Exercices
 const arr1 = ["Bonjour", "tout", "le monde"]
@@ -43,20 +36,27 @@ const arr3 = ["je m'appelle", "mon nom est"]
 const arr4 = ["Paul", "Doazan"]
 const arr5 = ["Antoine", "Dupont"]
 
-// à l'aide du spread operator, creer un seul et unique tableau, qui sera ensuite parcouru pour écrire les phrases suivantes :
-// Bonjour tout le monde, je m'appelle Antoine Dupont
-// Salut à tous, mon nom est Paul Doazan
+// à l'aide du spread operator, créer pour chaque phrase un seul tableau, qui sera ensuite parcouru :
 
+// Bonjour tout le monde je m'appelle Antoine Dupont
+const newArr1 = [...arr1, arr3[0], ...arr5]
+const result = newArr1.join(' ')
 
-// Le spread operator ressemble au rest parameter :
+// Salut à tous mon nom est Paul Doazan
+const newArr2 = [...arr2, arr3[1], ...arr4]
+const result2 = newArr2.join(' ')
+
+// console.log(result2)
+
+// CONFUSION AVEC LE REST PARAMETER
 function sum(...params) {
     let total = 0
-    params.forEach(param => total += param)
+    params.forEach((element) => {
+        total += element
+    })
     return total
 }
 
-// console.log(sum(3, 4, 8, 12))
+console.log(sum(4, 5, 7, 1, 4))
 
-// Précisions à nouveau sur les assignations par valeur, assignations par référence.
-// Précisions sur le destructuring
 
