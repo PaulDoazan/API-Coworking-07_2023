@@ -1,8 +1,10 @@
 const mockCoworkings = require('./mock-coworkings')
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 const port = 3000
 
+app.use(morgan('dev'))
 app.use(express.json())
 
 app.get('/api/coworkings/:id', (req, res) => {
@@ -52,11 +54,8 @@ app.put('/api/coworkings/:id', (req, res) => {
 
         return res.json({ message: `Le coworking ${updatedCoworking.name} a été modifié`, data: updatedCoworking })
     }
-
-
 })
 
-// implémenter le endpoint
 app.delete('/api/coworkings/:id', (req, res) => {
     const indexInArray = mockCoworkings.findIndex((element) => {
         return element.id === parseInt(req.params.id)
