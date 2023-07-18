@@ -1,27 +1,10 @@
-const mockCoworkings = require('./mock-coworkings')
 const express = require('express')
 const morgan = require('morgan')
+const sequelize = require('./db/sequelize')
 const app = express()
 const port = 3000
 
-const { Sequelize, DataTypes } = require('sequelize');
-
-const sequelize = new Sequelize('coworking_07_2023', 'root', '', {
-    host: 'localhost',
-    dialect: 'mariadb',
-    logging: false
-});
-
-sequelize.authenticate()
-    .then(() => console.log('La connexion à la base de données a bien été établie.'))
-    .catch(error => console.log(`Ìmpossible de se connecter à la base de données ${error}`))
-
-const User = sequelize.define('User', {
-    username: DataTypes.STRING,
-    birthday: DataTypes.DATE,
-});
-
-sequelize.sync()
+// sequelize.initDb()
 
 app.use(morgan('dev'))
 app.use(express.json())

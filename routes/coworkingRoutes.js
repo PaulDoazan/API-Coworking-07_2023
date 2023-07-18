@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const mockCoworkings = require('../mock-coworkings')
+const mockCoworkings = require('../db/mock-coworkings')
 
 router
     .route('/')
