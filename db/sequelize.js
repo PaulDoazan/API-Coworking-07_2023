@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes, EagerLoadingError } = require('sequelize');
 const mockCoworkings = require('./mock-coworkings')
 
 const sequelize = new Sequelize('coworking_07_2023', 'root', '', {
@@ -11,7 +11,7 @@ sequelize.authenticate()
     .then(() => console.log('La connexion à la base de données a bien été établie.'))
     .catch(error => console.log(`Ìmpossible de se connecter à la base de données ${error}`))
 
-const getCoworkingModel = require('../models/coworkingModel')
+const getCoworkingModel = require('../models/coworkingModelDefinition')
 const CoworkingModel = getCoworkingModel(sequelize, DataTypes)
 
 const initDb = () => {
@@ -31,5 +31,5 @@ const initDb = () => {
 }
 
 module.exports = {
-    initDb
+    initDb, CoworkingModel
 }

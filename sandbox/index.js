@@ -57,6 +57,10 @@ function sum(...params) {
     return total
 }
 
-console.log(sum(4, 5, 7, 1, 4))
+// console.log(sum(4, 5, 7, 1, 4))
+
+// ---------------------------------------
+
+// LES PROMESSES
 
 
