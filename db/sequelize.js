@@ -11,8 +11,8 @@ sequelize.authenticate()
     .then(() => console.log('La connexion à la base de données a bien été établie.'))
     .catch(error => console.log(`Ìmpossible de se connecter à la base de données ${error}`))
 
-const getCoworkingModel = require('../models/coworkingModel')
-const CoworkingModel = getCoworkingModel(sequelize, DataTypes)
+const defineCoworkingModel = require('../models/coworkingModelDefinition')
+const CoworkingModel = defineCoworkingModel(sequelize, DataTypes)
 
 const initDb = () => {
     sequelize
@@ -31,5 +31,5 @@ const initDb = () => {
 }
 
 module.exports = {
-    initDb
+    initDb, CoworkingModel
 }

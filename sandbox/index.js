@@ -67,15 +67,15 @@ function sum(...params) {
 const maPromesse = new Promise((resolve, reject) => {
     setTimeout(() => {
         resolve('toto');
-    }, 300);
+    }, 3000);
 });
 
 maPromesse
-    .then(result => {
+    .then((result) => {
+        throw new Error('erreur toto')
         return result += ' tata'
     })
     .then(result => {
-        throw new Error('erreur toto')
         return result += ' !'
     })
     .then(resultat => {
@@ -84,3 +84,40 @@ maPromesse
     .catch(err => {
         console.log(err);
     })
+
+// PRECISIONS sur les valeurs retournées des fonctions
+function createCar() {
+    let car = {
+        brand: 'Citroen',
+        type: 'diesel',
+        create: () => {
+            console.log('salut depuis la fenetre de ma citroen')
+        },
+        destroy: () => {
+
+        },
+        update: () => {
+
+        }
+    }
+
+    return car
+}
+
+let myCitroen = createCar()
+
+myCitroen.create()
+myCitroen.destroy()
+myCitroen.update()
+
+let nb1 = 3
+let nb2 = 4
+let nbResult = 0
+
+const sayHello = (seq, types) => {
+    nbResult = nb1 + nb2
+    return 'monModele'
+}
+
+const model = sayHello('sequelize', 'DataTypes');
+console.log(nbResult, model)
