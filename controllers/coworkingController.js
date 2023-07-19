@@ -60,7 +60,7 @@ exports.updateCoworking = (req, res) => {
             }
         })
         .catch(error => {
-            res.json({ message: `${error}` })
+            res.json({ message: error.message })
         })
 }
 exports.deleteCoworking = (req, res) => {
