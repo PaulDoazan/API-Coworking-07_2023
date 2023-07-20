@@ -5,10 +5,41 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        name: DataTypes.STRING,
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Le nom ne peut pas être vide'
+                }
+            },
+            unique: {
+                msg: 'Le nom est déjà pris'
+            }
+        },
         price: DataTypes.JSON,
-        superficy: DataTypes.INTEGER,
-        capacity: DataTypes.INTEGER,
+        superficy: {
+            type: DataTypes.INTEGER,
+            validate: {
+                isInt: {
+                    msg: 'La superficie doit être un nombre entier'
+                },
+                isNumeric: {
+                    msg: 'La superficie doit être un nombre'
+                }
+            }
+        },
+        capacity: {
+            type: DataTypes.INTEGER,
+            validate: {
+                isInt: {
+                    msg: 'La superficie doit être un nombre entier'
+                },
+                isNumeric: {
+                    msg: 'La superficie doit être un nombre'
+                }
+            }
+        },
         address: DataTypes.JSON,
     });
 }
