@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                 msg: 'Le nom est déjà pris'
             }
         },
+        picture: DataTypes.STRING,
         price: {
             type: DataTypes.JSON,
             validate: {

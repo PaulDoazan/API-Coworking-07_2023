@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const sequelize = require('./db/sequelize')
+const path = require('path');
 const app = express()
 const port = 3000
 
@@ -13,7 +14,7 @@ const coworkingRouter = require('./routes/coworkingRoutes')
 const userRouter = require('./routes/userRoutes')
 app.use('/api/coworkings', coworkingRouter)
 app.use('/api/users', userRouter)
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

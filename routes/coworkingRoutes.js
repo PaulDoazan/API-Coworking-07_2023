@@ -1,11 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const coworkingController = require('../controllers/coworkingController')
+const multer = require('../middleware/multer-config');
 
 router
     .route('/')
     .get(coworkingController.findAllCoworkings)
     .post(coworkingController.createCoworking)
+
+router
+    .route('/withImg')
+    .post(multer, coworkingController.createCoworkingWithImage)
 
 router
     .route('/:id')
