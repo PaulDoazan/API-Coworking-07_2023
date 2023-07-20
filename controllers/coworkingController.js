@@ -41,6 +41,7 @@ exports.createCoworking = (req, res) => {
             res.status(201).json({ message: 'Un coworking a bien été ajouté.', data: result })
         })
         .catch((error) => {
+            console.log(error)
             if (error instanceof UniqueConstraintError || error instanceof ValidationError) {
                 return res.status(400).json({ message: error.message })
             }
@@ -56,7 +57,7 @@ exports.updateCoworking = (req, res) => {
                 //throw new Error('Aucun coworking trouvé')
                 res.status(404).json({ message: 'Aucun coworking trouvé' })
             } else {
-                result
+                return result
                     .update(req.body)
                     .then(() => {
                         res.json({ message: `Coworking modifié : ${result.dataValues.id} `, data: result })
@@ -64,6 +65,9 @@ exports.updateCoworking = (req, res) => {
             }
         })
         .catch(error => {
+            if (error instanceof UniqueConstraintError || error instanceof ValidationError) {
+                return res.status(400).json({ message: error.message })
+            }
             res.status(500).json({ message: error.message })
         })
 }
@@ -75,7 +79,7 @@ exports.deleteCoworking = (req, res) => {
                 //throw new Error('Aucun coworking trouvé')
                 res.status(404).json({ message: 'Aucun coworking trouvé' })
             } else {
-                result
+                return result
                     .destroy()
                     .then(() => {
                         res.json({ message: `Coworking supprimé : ${result.dataValues.id} `, data: result })

@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
                     } else {
                         throw new Error('La syntaxe des données est incorrecte.')
                     }
-
                 }
             }
         },
