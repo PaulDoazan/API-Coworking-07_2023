@@ -41,7 +41,6 @@ exports.createCoworking = (req, res) => {
             res.status(201).json({ message: 'Un coworking a bien été ajouté.', data: result })
         })
         .catch((error) => {
-            console.log(error)
             if (error instanceof UniqueConstraintError || error instanceof ValidationError) {
                 return res.status(400).json({ message: error.message })
             }
