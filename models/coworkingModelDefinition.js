@@ -17,7 +17,30 @@ module.exports = (sequelize, DataTypes) => {
                 msg: 'Le nom est déjà pris'
             }
         },
-        price: DataTypes.JSON,
+        price: {
+            type: DataTypes.JSON,
+            validate: {
+                isPriceValid(value) {
+                    // let allNull = true
+                    // for (const key in value) {
+                    //     if (value[key] !== null) {
+                    //         allNull = false
+                    //     }
+                    // }
+                    // if (allNull) {
+                    //     throw new Error('Le coworking doit spécifié au moins un prix.');
+                    // }
+                    if (value.hasOwnProperty('hour') && value.hasOwnProperty('day') && value.hasOwnProperty('month')) {
+                        if (value.hour === null && value.day === null && value.month === null) {
+                            throw new Error('Le coworking doit spécifié au moins un prix.');
+                        }
+                    } else {
+                        throw new Error('La syntaxe des données est incorrecte.')
+                    }
+
+                }
+            }
+        },
         superficy: {
             type: DataTypes.INTEGER,
             validate: {

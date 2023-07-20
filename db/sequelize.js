@@ -19,13 +19,13 @@ const initDb = () => {
         .sync({ force: true })
         .then(() => {
             mockCoworkings.forEach(mock => {
-                CoworkingModel.create({
-                    name: mock.name,
-                    price: mock.price,
-                    superficy: mock.superficy,
-                    capacity: mock.capacity,
-                    address: mock.address
-                });
+                // CoworkingModel.create({
+                //     name: mock.name,
+                //     price: mock.price,
+                //     superficy: mock.superficy,
+                //     capacity: mock.capacity,
+                //     address: mock.address
+                // });
             })
         })
 }
