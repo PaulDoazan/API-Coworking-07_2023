@@ -40,6 +40,7 @@ exports.login = (req, res) => {
                 })
         })
         .catch(error => {
+            // A CORRIGER
             console.log(error)
         })
 }
