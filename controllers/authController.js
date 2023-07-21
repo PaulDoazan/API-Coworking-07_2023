@@ -50,16 +50,14 @@ exports.protect = (req, res, next) => {
     }
     const token = req.headers.authorization.split(' ')[1]
     if (token) {
-        jwt.verify(token, SECRET_KEY)
-            .then(decoded => {
-                req.username = decoded.data
-                next()
-            })
-            .catch(error => {
-                res.status(403).json({ message: `Le jeton n'est pas valide` })
-            })
+        try {
+            const decoded = jwt.verify(token, SECRET_KEY)
+            req.username = decoded.data
+            next()
+        } catch (error) {
+            res.status(403).json({ message: `Le jeton n'est pas valide` })
+        }
     } else {
-        res.json({ message: `Vous n'avez pas d'autorisation` })
+        res.status(401).json({ message: `Vous n'êtes pas authentifié.` })
     }
-
 }
