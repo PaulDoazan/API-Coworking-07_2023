@@ -11,3 +11,19 @@ exports.findAllUsers = (req, res) => {
             res.status(500).json({ message: error })
         })
 }
+
+exports.createUser = (req, res) => {
+    UserModel
+        .create(req.body)
+        .then(result => {
+            res.status(201).json({ message: 'Un utilisateur a bien été créé.', data: result })
+        })
+        .catch(error => {
+            if (error instanceof ValidationError || error instanceof UniqueConstraintError) {
+                const cleanMessage = error.message.split(': ')[1]
+                return res.status(400).json({ message: cleanMessage })
+            }
+
+            res.status(500).json({ message: error })
+        })
+}
