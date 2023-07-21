@@ -33,7 +33,7 @@ const initDb = () => {
             bcrypt.hash('mdp', 10)
                 .then(hash => {
                     UserModel.create({
-                        username: 'Jean Dupont',
+                        username: 'Jean',
                         password: hash
                     })
                 })

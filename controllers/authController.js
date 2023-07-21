@@ -1,6 +1,8 @@
 const { UniqueConstraintError, ValidationError } = require('sequelize')
 const { UserModel } = require('../db/sequelize')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const SECRET_KEY = 'ma_clé_secrète'
 
 exports.signUp = (req, res) => {
     bcrypt.hash(req.body.password, 10)
@@ -22,5 +24,42 @@ exports.signUp = (req, res) => {
 }
 
 exports.login = (req, res) => {
-    res.json({ message: 'route du login' })
+    UserModel.findOne({ where: { username: req.body.username } })
+        .then(user => {
+            bcrypt.compare(req.body.password, user.password)
+                .then(isValid => {
+                    if (isValid) {
+                        const token = jwt.sign({
+                            data: req.body.username
+                        }, SECRET_KEY, { expiresIn: 60 * 60 });
+
+                        res.json({ message: 'login réussi', data: token })
+                    } else {
+                        return res.json({ message: `Le mot de passe n'est pas correct` })
+                    }
+                })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+exports.protect = (req, res, next) => {
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: `Vous n'êtes pas authentifié` })
+    }
+    const token = req.headers.authorization.split(' ')[1]
+    if (token) {
+        jwt.verify(token, SECRET_KEY)
+            .then(decoded => {
+                req.username = decoded.data
+                next()
+            })
+            .catch(error => {
+                res.status(403).json({ message: `Le jeton n'est pas valide` })
+            })
+    } else {
+        res.json({ message: `Vous n'avez pas d'autorisation` })
+    }
+
 }

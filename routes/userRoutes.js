@@ -17,7 +17,7 @@ router
 
 router
     .route('/:id')
-    .delete(userController.deleteUser)
-    .put(userController.updateUser)
+    .delete(authController.protect, userController.deleteUser)
+    .put(authController.protect, userController.updateUser)
 
 module.exports = router
