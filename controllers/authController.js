@@ -1,5 +1,5 @@
 const { UniqueConstraintError, ValidationError } = require('sequelize')
-const { UserModel } = require('../db/sequelize')
+const { UserModel, RoleModel } = require('../db/sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'ma_clé_secrète'
@@ -63,6 +63,22 @@ exports.protect = (req, res, next) => {
     }
 }
 
-exports.restrictTo = () => {
-
+exports.restrictTo = (roleParam) => {
+    return (req, res, next) => {
+        return UserModel.findOne({ where: { username: req.username } })
+            .then(user => {
+                return RoleModel.findByPk(user.RoleId)
+                    .then(role => {
+                        console.log(role.label, roleParam);
+                        if (role.label === roleParam) {
+                            return next()
+                        } else {
+                            return res.status(403).json({ message: `Vous n'avez pas les droits suffisants` })
+                        }
+                    })
+            })
+            .catch(error => {
+                return res.status(500).json({ message: error.message })
+            })
+    }
 }

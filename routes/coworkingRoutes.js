@@ -6,12 +6,12 @@ const authController = require('../controllers/authController')
 router
     .route('/')
     .get(coworkingController.findAllCoworkings)
-    .post(authController.protect, coworkingController.createCoworking)
+    .post(authController.protect, authController.restrictTo("editor"), coworkingController.createCoworking)
 
 router
     .route('/:id')
     .get(coworkingController.findCoworkingByPk)
     .put(coworkingController.updateCoworking)
-    .delete(coworkingController.deleteCoworking)
+    .delete(authController.protect, authController.restrictTo("admin"), coworkingController.deleteCoworking)
 
 module.exports = router

@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const mockCoworkings = require('./mock-coworkings')
 const bcrypt = require('bcrypt')
-const roles = ['user', 'editor', 'admin']
+const roles = require('./roles.json')
 
 const sequelize = new Sequelize('coworking_07_2023', 'root', '', {
     host: 'localhost',
@@ -22,6 +22,7 @@ const UserModel = defineUserModel(sequelize, DataTypes)
 const RoleModel = defineRoleModel(sequelize, DataTypes)
 
 RoleModel.hasMany(UserModel)
+UserModel.belongsTo(RoleModel)
 
 const initDb = () => {
     sequelize
@@ -71,5 +72,5 @@ const initDb = () => {
 }
 
 module.exports = {
-    initDb, CoworkingModel, UserModel
+    initDb, CoworkingModel, UserModel, RoleModel
 }
