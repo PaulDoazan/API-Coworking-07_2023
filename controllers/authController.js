@@ -1,8 +1,13 @@
 const { UniqueConstraintError, ValidationError } = require('sequelize')
-const { UserModel } = require('../db/sequelize')
+const { UserModel, RoleModel } = require('../db/sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'ma_clé_secrète'
+const rolesHierarchy = {
+    admin: ["admin", "editor", "user"],
+    editor: ["editor", "user"],
+    user: ["user"]
+}
 
 exports.signUp = (req, res) => {
     bcrypt.hash(req.body.password, 10)
@@ -30,7 +35,7 @@ exports.login = (req, res) => {
                 .then(isValid => {
                     if (isValid) {
                         const token = jwt.sign({
-                            data: req.body.username
+                            data: user.username
                         }, SECRET_KEY, { expiresIn: 60 * 60 });
 
                         res.json({ message: 'login réussi', data: token })
@@ -60,5 +65,29 @@ exports.protect = (req, res, next) => {
         }
     } else {
         res.status(401).json({ message: `Vous n'êtes pas authentifié.` })
+    }
+}
+
+exports.restrictTo = (roleParam) => {
+    return (req, res, next) => {
+        if (!req.username) {
+            return res.status(401).json({ message: "Vous n'etes pas authentifie" })
+        }
+
+        UserModel.findOne({ where: { username: req.username } })
+            .then(user => {
+                RoleModel.findOne({ where: { id: user.RoleId } })
+                    .then(role => {
+                        if (rolesHierarchy[role.label].includes(roleParam)) {
+                            return next();
+                        } else {
+                            return res.status(403).json({ message: "Droits insuffisants" })
+                        }
+                    })
+            })
+            .catch(err => {
+                const message = "Erreur lors de l'autorisation"
+                res.status(500).json({ message, data: err })
+            })
     }
 }
