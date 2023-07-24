@@ -50,6 +50,7 @@ exports.deleteUser = (req, res) => {
                 return result
                     .destroy()
                     .then(() => {
+                        result.password = 'hidden'
                         res.json({ message: `utilisateur supprimé : ${result.dataValues.id} `, data: result })
                     })
             }
