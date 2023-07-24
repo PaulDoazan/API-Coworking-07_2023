@@ -4,6 +4,12 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'ma_clé_secrète'
 
+const rolesHierarchy = {
+    user: ["user"],
+    editor: ["user", "editor"],
+    admin: ["user", "editor", "admin"]
+}
+
 exports.signUp = (req, res) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -69,8 +75,7 @@ exports.restrictTo = (roleParam) => {
             .then(user => {
                 return RoleModel.findByPk(user.RoleId)
                     .then(role => {
-                        console.log(role.label, roleParam);
-                        if (role.label === roleParam) {
+                        if (rolesHierarchy[role.label].includes(roleParam)) {
                             return next()
                         } else {
                             return res.status(403).json({ message: `Vous n'avez pas les droits suffisants` })
