@@ -26,6 +26,7 @@ exports.signUp = (req, res) => {
 exports.login = (req, res) => {
     UserModel.findOne({ where: { username: req.body.username } })
         .then(user => {
+            if (!user) return res.status(404).json({ message: `L'utilisateur n'existe pas` })
             bcrypt.compare(req.body.password, user.password)
                 .then(isValid => {
                     if (isValid) {
@@ -40,8 +41,7 @@ exports.login = (req, res) => {
                 })
         })
         .catch(error => {
-            // A CORRIGER
-            console.log(error)
+            return res.status(500).json({ message: error.message })
         })
 }
 
@@ -61,4 +61,8 @@ exports.protect = (req, res, next) => {
     } else {
         res.status(401).json({ message: `Vous n'êtes pas authentifié.` })
     }
+}
+
+exports.restrictTo = () => {
+
 }
