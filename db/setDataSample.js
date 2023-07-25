@@ -48,18 +48,18 @@ module.exports = (CoworkingModel, UserModel, RoleModel, ReviewModel) => {
                     });
                 })
                 Promise.all(coworkingPromises).then(() => {
-                    // ReviewModel.create({
-                    //     content: 'Lorem Ipsum',
-                    //     rating: 3,
-                    //     UserId: 1,
-                    //     CoworkingId: 10
-                    // })
-                    // ReviewModel.create({
-                    //     content: 'Dolor sit amet',
-                    //     rating: 5,
-                    //     UserId: 2,
-                    //     CoworkingId: 7
-                    // })
+                    ReviewModel.create({
+                        content: 'Lorem Ipsum',
+                        rating: 3,
+                        UserId: 1,
+                        CoworkingId: 10
+                    })
+                    ReviewModel.create({
+                        content: 'Dolor sit amet',
+                        rating: 5,
+                        UserId: 2,
+                        CoworkingId: 7
+                    })
                 })
             })
     })
