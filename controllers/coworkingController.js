@@ -59,6 +59,29 @@ exports.createCoworking = (req, res) => {
         })
 }
 
+exports.createCoworkingWithImage = (req, res) => {
+    const newCoworking = JSON.parse(req.body.data);
+    CoworkingModel
+        .create({
+            name: newCoworking.name,
+            price: newCoworking.price,
+            superficy: newCoworking.superficy,
+            capacity: newCoworking.capacity,
+            address: newCoworking.address,
+            UserId: newCoworking.UserId,
+            picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        })
+        .then((result) => {
+            res.status(201).json({ message: 'Un coworking a bien été ajouté.', data: result })
+        })
+        .catch((error) => {
+            if (error instanceof UniqueConstraintError || error instanceof ValidationError) {
+                return res.status(400).json({ message: error.message })
+            }
+            res.status(500).json({ message: `Une erreur est survenue :  ${error}` })
+        })
+}
+
 exports.updateCoworking = (req, res) => {
     CoworkingModel
         .findByPk(req.params.id)

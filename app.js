@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const sequelize = require('./db/sequelize')
+const path = require('path')
 const app = express()
 const port = 3000
 
@@ -16,6 +17,8 @@ const reviewRouter = require('./routes/reviewRoutes')
 app.use('/api/coworkings', coworkingRouter)
 app.use('/api/users', userRouter)
 app.use('/api/reviews', reviewRouter)
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Middleware quand l'url de la requête n'aboutit à rien
 app.use((req, res) => {
