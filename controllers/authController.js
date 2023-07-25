@@ -98,7 +98,6 @@ exports.restrictToOwnUser = (modelParam) => {
                 }
                 return UserModel.findOne({ where: { username: req.username } })
                     .then(user => {
-                        console.log(result.UserId, user.id)
                         if (result.UserId !== user.id) {
                             const message = "Tu n'es pas le créateur de cette ressource";
                             return res.status(403).json({ message })
