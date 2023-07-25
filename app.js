@@ -17,6 +17,11 @@ app.use('/api/coworkings', coworkingRouter)
 app.use('/api/users', userRouter)
 app.use('/api/reviews', reviewRouter)
 
+// Middleware quand l'url de la requête n'aboutit à rien
+app.use((req, res) => {
+    res.status(404).json({ message: `L'url demandé n'existe pas.` })
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

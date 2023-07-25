@@ -1,9 +1,20 @@
-const { UniqueConstraintError, ValidationError, Op } = require('sequelize')
-const { CoworkingModel, ReviewModel } = require('../db/sequelize')
+const { UniqueConstraintError, ValidationError, Op, QueryTypes } = require('sequelize')
+const { CoworkingModel, ReviewModel, sequelize } = require('../db/sequelize')
 
 exports.findAllCoworkings = (req, res) => {
     CoworkingModel
-        .findAll()
+        .findAll({ include: ReviewModel })
+        .then(result => {
+            res.json({ message: 'La liste des coworkings a bien été récupérée.', data: result })
+        })
+        .catch(error => {
+            res.status(500).json({ message: error })
+        })
+}
+
+exports.findAllCoworkingsWithRawSql = (req, res) => {
+    sequelize.query("SELECT name, rating FROM  `coworkings` LEFT JOIN `reviews` ON `coworkings`.`id` = `reviews`.`coworkingId`", { type: QueryTypes.SELECT })
+        // .findAll({ include: ReviewModel })
         .then(result => {
             res.json({ message: 'La liste des coworkings a bien été récupérée.', data: result })
         })

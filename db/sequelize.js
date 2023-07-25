@@ -54,5 +54,5 @@ const initDb = () => {
 }
 
 module.exports = {
-    initDb, CoworkingModel, UserModel, RoleModel, ReviewModel
+    initDb, sequelize, CoworkingModel, UserModel, RoleModel, ReviewModel
 }

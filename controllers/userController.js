@@ -3,7 +3,7 @@ const { UserModel } = require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
 exports.findAllUsers = (req, res) => {
-    UserModel
+    UserModel.scope('withoutPassword')
         .findAll()
         .then(result => {
             res.json({ message: 'La liste des utilisateurs a bien été récupérée.', data: result })

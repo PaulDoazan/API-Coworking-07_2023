@@ -23,6 +23,4 @@ exports.createReview = (req, res) => {
         .catch(error => {
             res.status((500)).json({ message: error.message })
         })
-
-
 } 
