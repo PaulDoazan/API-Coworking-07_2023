@@ -7,4 +7,8 @@ router
     .route('/')
     .get(reviewController.findAllReviews)
 
+router
+    .route('/:coworkingId')
+    .post(authController.protect, reviewController.createReview)
+
 module.exports = router
