@@ -23,18 +23,21 @@ const ReviewModel = defineReviewModel(sequelize, DataTypes)
 
 RoleModel.hasMany(UserModel)
 UserModel.belongsTo(RoleModel)
+
 UserModel.hasMany(ReviewModel, {
     foreignKey: {
         allowNull: false
     }
 });
 ReviewModel.belongsTo(UserModel);
+
 UserModel.hasMany(CoworkingModel, {
     foreignKey: {
         allowNull: false
     }
 });
 CoworkingModel.belongsTo(UserModel);
+
 CoworkingModel.hasMany(ReviewModel, {
     foreignKey: {
         allowNull: false

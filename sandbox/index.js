@@ -1,5 +1,7 @@
 // SPREAD OPERATOR
 
+const { ValidationError } = require("sequelize")
+
 // pour les tableaux
 // const arr1 = [2, 4, 7]
 // const arr2 = [3, 5, 8]
@@ -129,3 +131,34 @@ btn.addEventListener('click', (event) => {
     }
     myFunction()
 })
+
+// --------------- CLARIFICATION sur l'usage des Classes en javascript
+
+// if(error instanceof ValidationError){
+
+// }
+
+class Identity {
+    firstname;
+    lastname;
+    constructor(fParameter, lParameter) {
+        this.firstname = fParameter
+        this.lasttname = lParameter
+    }
+    sayHello = () => {
+        return `Bonjour  ${this.firstname} ${this.lastname} !!!`;
+    }
+}
+
+const myIdentity = new Identity('Paul', 'Doazan')
+const myIdentity_2 = new Identity('Pierre', 'Doazan')
+const myIdentity_3 = new Identity('Mathilde', 'Doazan')
+
+myIdentity.lastname
+
+const name = myIdentity_3.sayHello()
+
+const myNumber = 12
+
+// if(myNumber instanceof Identity) =====> false
+// if(myIdentity_2 instanceof Identity) =====> true
