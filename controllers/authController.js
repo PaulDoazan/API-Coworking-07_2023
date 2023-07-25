@@ -87,3 +87,28 @@ exports.restrictTo = (roleParam) => {
             })
     }
 }
+
+exports.restrictToOwnUser = (modelParam) => {
+    return (req, res, next) => {
+        modelParam.findByPk(req.params.id)
+            .then(result => {
+                if (!result) {
+                    const message = `La ressource n°${req.params.id} n'existe pas`
+                    return res.status(404).json({ message })
+                }
+                return UserModel.findOne({ where: { username: req.username } })
+                    .then(user => {
+                        console.log(result.UserId, user.id)
+                        if (result.UserId !== user.id) {
+                            const message = "Tu n'es pas le créateur de cette ressource";
+                            return res.status(403).json({ message })
+                        }
+                        return next();
+                    })
+            })
+            .catch(err => {
+                const message = "Erreur lors de l'autorisation"
+                res.status(500).json({ message, data: err })
+            })
+    }
+}

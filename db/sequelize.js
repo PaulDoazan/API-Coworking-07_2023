@@ -29,6 +29,12 @@ UserModel.hasMany(ReviewModel, {
     }
 });
 ReviewModel.belongsTo(UserModel);
+UserModel.hasMany(CoworkingModel, {
+    foreignKey: {
+        allowNull: false
+    }
+});
+CoworkingModel.belongsTo(UserModel);
 CoworkingModel.hasMany(ReviewModel, {
     foreignKey: {
         allowNull: false
